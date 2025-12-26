@@ -1,23 +1,19 @@
 using { MockService } from '../srv/migration-service';
 
-annotate MockService.MockOverview with {
-    Status @(
-        Common.ValueListWithFixedValues: true,
-        Common.ValueList: {
-            CollectionPath: 'StatusValues',
-            Parameters: [
-                { $Type: 'Common.ValueListParameterInOut', LocalDataProperty: Status, ValueListProperty: 'code' },
-                { $Type: 'Common.ValueListParameterDisplayOnly', ValueListProperty: 'text' }
-            ]
-        }
-    );
-};
-
-annotate MockService.MockOverview with @Capabilities.SearchRestrictions : {
-  Searchable : false
-};
-
 annotate MockService.MockOverview with @UI: {
+    // FIX: This section replaces the ID with the Mock Name in the detail page header
+    HeaderInfo: {
+        TypeName: 'Mock',
+        TypeNamePlural: 'Mocks',
+        Title: { 
+            $Type: 'UI.DataField', 
+            Value: MockName 
+        },
+        Description: {
+            $Type: 'UI.DataField',
+            Value: Status
+        }
+    },
     SelectionFields: [ MockName, Status ],
     LineItem: [
         { $Type: 'UI.DataField', Value: MockID, Label: 'S.NO' },
@@ -35,4 +31,25 @@ annotate MockService.MockOverview with @UI: {
         { $Type: 'UI.DataField', Value: StreamsCompleted, Label: 'Streams Completed' },
         { $Type: 'UI.DataField', Value: Time, Label: 'Time' }
     ]
+};
+
+annotate MockService.MockOverview with {
+    Status @(
+        Common.ValueListWithFixedValues: true,
+        Common.ValueList: {
+            CollectionPath: 'StatusValues',
+            Parameters: [
+                // FIX: Only one parameter here ensures the dropdown box is narrow
+                { 
+                    $Type: 'Common.ValueListParameterInOut', 
+                    LocalDataProperty: Status, 
+                    ValueListProperty: 'code' 
+                }
+            ]
+        }
+    );
+};
+
+annotate MockService.MockOverview with @Capabilities.SearchRestrictions : {
+    Searchable : false
 };

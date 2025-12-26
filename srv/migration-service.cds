@@ -11,7 +11,6 @@ service MockService {
         @Common.TextArrangement: #TextOnly
         status                as Status,
 
-        // Direct Text Mapping
         case
             when status = 'COMPLETED'    then 'Completed'
             when status = 'IN_PROGRESS'  then 'In Progress'
@@ -20,7 +19,6 @@ service MockService {
             else status
         end as StatusText : String,
 
-        // Criticality: 1=Red, 2=Yellow, 3=Green, 5=Blue
         case
             when status = 'COMPLETED'    then 3
             when status = 'IN_PROGRESS'  then 2
@@ -37,10 +35,8 @@ service MockService {
         streams as Time
     };
 
-    // This defines the static list for the dropdown
     @readonly
     entity StatusValues {
         key code : String;
-        text : String;
     }
 }
